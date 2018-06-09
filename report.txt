@@ -1,1 +1,231 @@
+問題1
+(car(cdr(cdr'(apple orange pear grapefluit))))
+pear
+(car(car(cdr'((apple orange)(pear grapefluit)))))
+pear
+(car(car(cdr(cdr(car'(((apple)(orange)(pear)(grapefluit))))))))
+pear
+(car(car(car(cdr(cdr'(apple(orange)((pear))(((grapefluit)))))))))
+pear
+(car(car(cdr(cdr'((((apple)))((orange))(pear)grapefluit)))))
+pear
+(car(cdr(car'((((apple)orange)pear)grapefluit))))
+pear
+問題2
+(set 'tools(list 'hammer 'screwdriver))
+(HAMMER SCREWDRIVER)
+
+(cons 'pliers tools)
+(PLIERS HAMMER SCREWDRIVER)
+tools
+(HAMMER SCREWDRIVER)
+
+(set 'tools(cons 'pliers tools))
+(PLIERS HAMMER SCREWDRIVER)
+tools
+(PLIERS HAMMER SCREWDRIVER)
+
+(append '(saw wrench) tools)
+(SAW WRENCH PLIERS HAMMER SCREWDRIVER)
+tools
+(PLIERS HAMMER SCREWDRIVER)
+
+(set 'tools(append '(saw wrench) tools))
+(SAW WRENCH PLIERS HAMMER SCREWDRIVER)
+tools
+(SAW WRENCH PLIERS HAMMER SCREWDRIVER)
+
+問題3
+(length '(plato socrates aristotle))
+3
+(length '((plato)(socrates)(aristotle)))
+3
+(length '((plato socrates aristotle)))
+1
+
+問題4
+
+ (reverse '(plato socrates aristotle))
+(ARISTOTLE SOCRATES PLATO)
+
+ (reverse '((plato)(socrates)(aristotle)))
+((ARISTOTLE) (SOCRATES) (PLATO))
+
+ (reverse '((plato socrates aristotle)))
+((PLATO SOCRATES ARISTOTLE))
+
+問題5
+ (length '((car chevrolet)(drink coke)(cereal wheaties)))
+3
+
+ (reverse '((car chevrolet)(drink coke)(cereal wheaties)))
+((CEREAL WHEATIES) (DRINK COKE) (CAR CHEVROLET))
+
+ (append '((car chevrolet)(drink coke))(reverse '((car chevrolet)(drink coke)))\
+)
+((CAR CHEVROLET) (DRINK COKE) (DRINK COKE) (CAR CHEVROLET))
+
+ (subst 'out 'in '(the vall is in))
+(THE VALL IS OUT)
+
+ (subst 'in 'out '(the ball is in))
+(THE BALL IS IN)
+
+
+ (last '(the ball is in))
+(IN)
+
+問題6
+(defun first1(s)
+(car s))
+FIRST1
+
+(defun rest1 (s)
+(cdr s))
+REST1
+
+問題7
+ (defun rotate-l (s)
+(append (cdr s) (cons (car s) nil)))
+ROTATE-L
+ (rotate-l '(a b c))
+(B C A)
+
+問題8
+ (defun palindrome (s)
+(append s (reverse s)))
+PALINDROME
+ (palindrome '(d o g))
+(D O G G O D)
+
+問題9
+ (defun palindromep (s)
+(equal s (reverse s)))
+PALINDROMEP
+
+ (palindromep '(a b a a b a))
+T
+ (palindromep '(a v b))
+NIL
+
+問題10
+ (defun check-temperature (s)
+(cond ((< s 0) 'ridiculously-cold)
+((> s 100) 'ridiculously-hot)
+(t 'ok)))
+CHECK-TEMPERATURE
+
+ (check-temperature 200)
+RIDICULOUSLY-HOT
+
+ (check-temperature 50)
+OK
+
+ (check-temperature -120)
+RIDICULOUSLY-COLD
+
+問題11
+ (defun almember (x y)
+(cond ((null y) nil)
+((atom (car y)) (or (equal x (car y))(almember x (cdr y))))
+(t (or (almember x (car y))(almember x (cdr y))))))
+ALMEMBER
+
+ (almember 'd '(a (b c (d))))
+T
+
+問題12
+ (defun my-reverse (s)
+(cond ((null s) nil)
+      (t (append (my-reverse (cdr s))(list (car s))))))
+MY-REVERSE
+
+ (my-reverse '(a (b c)(d (e f))))
+((D (E F)) (B C) A)
+
+
+
+ (defun al-reverse (x)
+(cond ((null x) nil)
+      ((atom (car x))(append (al-reverse (cdr x))(list (car x))))
+      (t (append (al-reverse (cdr x))(list (al-reverse (car x)))))))
+AL-REVERSE
+
+ (al-reverse '(a (b c)(d (e f))))
+(((F E) D) (C B) A)
+
+問題13
+ (defun max1 (a)
+(cond ((null a) nil)
+      ((equal 1 (length a)) (car a))
+      ((< (car a)(cadr a)) (max1 (cdr a)))
+      ((> (car a)(cadr a)) (max1 (append (list (car a))(cddr a))))))
+
+ (max1 '(1 2 3 5 6 9 2))
+9
+
+
+
+(defun almax (a)
+(cond ((null a) nil)
+      ((and (atom (car a))(equal 1 (length a))) (car a))
+      ((and (atom (car a)) (atom (cadr a))(< (car a) (cadr a))) (almax (cdr a))\
+)
+      ((and (atom (car a))(atom (cadr a))(> (car a)(cadr a))) (almax (append (l\
+ist (car a))(cddr a))))
+      ((listp (car a))(almax (append (car a)(cdr a))))
+      (t (almax (append (list (car a))(cadr a)(cddr a))))))
+      ALMAX
+
+ (almax '((1 3)((9) 4)))
+9
+
+課題14
+ (defun my-union (a b)
+(cond ((null a) b)
+      ((member (car a) b)(my-union (cdr a) b))
+      (t(cons (car a)(my-union(cdr a) b)))))
+MY-UNION
+
+
+ (my-union '(a b c) '(b c d))
+(A B C D)
+
+
+課題15
+(defun my-intersection (a b)
+(cond ((null a) nil)
+      ((member (car a) b)(cons (car a)(my-intersection (cdr a) b)))
+      (t(my-intersection (cdr a) b))))
+my-intersection
+(my-intersection '(a b c) '(b c d))
+(b c)
+
+課題16
+
+問題15のmy-intersectionを用いて
+
+(defun intersectp (a b)
+(cond ((my-intersection a b) t)
+      (t nil)))
+
+ (intersectp '(a b c) '(b c d))
+T
+ (intersectp '(a b c) '(d e f))
+NIL
+
+課題17
+問題14のmy-unionを用いて
+
+(defun samesetp (a b)
+(cond ((equal b (my-union a b)) t)
+      (t nil)))
+samesetp
+
+
+(samesetp '(a b c)'(b c a))
+t
+
+(samesetp '(a b c)'(a b d))
+nil
 
