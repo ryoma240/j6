@@ -1,0 +1,12 @@
+(defun tower-of-hanoi (a b c) (transfer 'a 'b 'c  a b c (length a)))
+
+(defun move-disk (from to g)
+(list (list 'MOVE (car g) 'DISK 'FROM from 'TO to)))
+
+
+(defun transfer (from to spare f1 g s number)
+(cond ((equal number 1) (setq g (cons (car f1) g)) (setq f1 (cdr f1)) (move-disk from to g))
+      (t (append (transfer from spare to f1 s g (- number 1))
+	         (setq g (cons (car f1) g)) (setq f1 (cdr f1))
+	         (move-disk from to g)
+	         (transfer spare to from s g f1 (- number 1))))))
