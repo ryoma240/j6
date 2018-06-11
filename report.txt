@@ -229,3 +229,42 @@ t
 (samesetp '(a b c)'(a b d))
 nil
 
+問題18
+(defun dynamic-range (s)
+(cond ((null s) 0)
+      ((atom s) s)
+      (t (/ (apply 'min s) (apply 'max s)))))
+DYNAMIC-RANGE
+
+ (dynamic-range '(2 4 5 10))
+1/5
+
+
+問題19
+(defun factorial (n)
+(prog (result exponent)
+      (setq result 1)
+      (setq exponent n)
+      loop
+      (cond ((zerop exponent) (return result)))
+      (setq result (* exponent result))
+      (setq exponent (- exponent 1))
+      (go loop)))
+factorial
+
+ (factorial 10)
+3628800
+
+
+問題22
+ (defun fetch (s n)
+(cond ((assoc s n) (cadr (assoc s n)))
+      (t '?)))
+
+(fetch 'temperature chart)
+100
+
+(fetch 'c chart)
+?
+
+
